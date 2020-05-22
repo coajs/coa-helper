@@ -1,0 +1,31 @@
+{
+  "name": "coa-helper",
+  "version": "1.0.1",
+  "description": "helper component for coa",
+  "keywords": [
+    "coajs",
+    "coa",
+    "helper"
+  ],
+  "license": "MIT",
+  "author": "Aex",
+  "homepage": "https://github.com/coajs/coa-helper",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/coajs/coa-helper.git"
+  },
+  "scripts": {
+    "dev": "tsc -w",
+    "build": "rm -rf dist && tsc && cp package.json dist",
+    "npm-publish": "yarn build && yarn version --patch && cp package.json README.md dist && cd dist && npm publish"
+  },
+  "dependencies": {
+    "@types/lodash": "^4.14.152",
+    "dayjs": "^1.8.27",
+    "lodash": "^4.17.15"
+  },
+  "devDependencies": {
+    "@types/node": "^14.0.5",
+    "typescript": "^3.9.3"
+  }
+}
