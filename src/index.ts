@@ -1,5 +1,6 @@
 import * as dayjs from 'dayjs'
 import * as _ from 'lodash'
-import helper from './helper'
+import $ from './helper'
+import HashIds = require('hashids/cjs')
 
-export { helper as $, _, dayjs, helper }
+export { $, _, $ as helper, _ as lodash, dayjs, HashIds }
