@@ -1,5 +1,3 @@
-// declare type TWorkData = Dic<any>;
-// declare type TWorker = (ids: string[]) => Promise<TWorkData>
 import * as _ from 'lodash'
 
 export default new class {

@@ -26,6 +26,16 @@ export default new class {
     })
   }
 
+  // 运行代码后安全退出
+  run (runner: () => Promise<void>) {
+    runner()
+      .then(() => process.exit(0))
+      .catch(e => {
+        console.error(e)
+        process.exit(1)
+      })
+  }
+
   // 时间日期格式化
   datetime (format = 'YYYY-MM-DD HH:mm:ss', time ?: number) {
     // https://day.js.org/docs/zh-CN/display/format
