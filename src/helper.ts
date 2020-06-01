@@ -54,6 +54,19 @@ export default new class {
     return Array.isArray(data) ? data : [data]
   }
 
+  // 解析成排序过的QueryString
+  sortQueryString (...data: { [index: string]: any }[]) {
+    const qsArray = [] as string[]
+    _.forEach(data, d => {
+      _.forEach(d, (v, k) => {
+        const val = typeof v === 'object' ? JSON.stringify(v) : v
+        qsArray.push(k + '=' + val)
+      })
+    })
+    qsArray.sort()
+    return qsArray.join('&')
+  }
+
   // 列表转换成树形式
   list2tree (list: any[], rootValue: any = '', idKey = 'id', pidKey = 'parentId', childKey = 'child') {
     const temp = {} as any, tree = [] as any[]
@@ -82,10 +95,10 @@ export default new class {
   }
 
   // 异步遍历循环
-  async asyncEach (list: any, callback: (item: any, key: string | number) => void) {
+  async asyncEach (list: any, iteratee: (item: any, key: string | number) => void) {
     for (let i in list)
       if (list.hasOwnProperty(i))
-        await callback(list[i], i)
+        await iteratee(list[i], i)
   }
 
   // 安全的异步遍历循环
