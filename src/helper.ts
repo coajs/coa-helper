@@ -21,7 +21,7 @@ export default new class {
 
   // 延迟执行函数
   async timeout (ms: number = 0) {
-    return new Promise(resolve => {
+    return new Promise<void>(resolve => {
       setTimeout(() => resolve(), ms)
     })
   }

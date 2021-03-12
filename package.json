@@ -1,6 +1,6 @@
 {
   "name": "coa-helper",
-  "version": "1.0.5",
+  "version": "1.1.1",
   "description": "helper component for coa",
   "keywords": [
     "coajs",
@@ -20,14 +20,14 @@
     "npm-publish": "yarn build && yarn version --patch && cp package.json README.md dist && cd dist && npm publish"
   },
   "dependencies": {
-    "@types/lodash": "^4.14.152",
-    "axios": "^0.19.2",
-    "dayjs": "^1.8.27",
-    "hashids": "^2.2.1",
-    "lodash": "^4.17.15"
+    "@types/lodash": "^4.14.168",
+    "axios": "^0.21.1",
+    "dayjs": "^1.10.4",
+    "hashids": "^2.2.8",
+    "lodash": "^4.17.21"
   },
   "devDependencies": {
-    "@types/node": "^14.0.5",
-    "typescript": "^3.9.3"
+    "@types/node": "^14.14.33",
+    "typescript": "^4.2.3"
   }
 }
