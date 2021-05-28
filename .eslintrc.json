@@ -17,6 +17,7 @@
     "@typescript-eslint/no-namespace": "off",
     "@typescript-eslint/restrict-plus-operands": "off",
     "@typescript-eslint/restrict-template-expressions": "off",
-    "@typescript-eslint/strict-boolean-expressions": "off"
+    "@typescript-eslint/strict-boolean-expressions": "off",
+    "no-prototype-builtins": "off"
   }
 }

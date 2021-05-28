@@ -5,7 +5,7 @@
 [![npm downloads](https://img.shields.io/npm/dm/coa-helper.svg?style=flat-square)](http://npm-stat.com/charts.html?package=coa-helper)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](https://github.com/coajs/coa-helper/pulls)
 
-COA基础工具库，包含常用方法、必要的第三方类库
+COA 基础工具库，包含常用方法、必要的第三方类库
 
 ## 使用说明
 
@@ -42,7 +42,11 @@ $.parseArray(undefined) // []
 $.parseArray(null) // []
 
 // 将对象数组转成键值对的对象形式
-const list1 = [{ id: 'a', name: 'A' }, { id: 'b', name: 'B' }, { id: 'c', name: 'C' }]
+const list1 = [
+  { id: 'a', name: 'A' },
+  { id: 'b', name: 'B' },
+  { id: 'c', name: 'C' },
+]
 $.list2object(list1, 'id') // { a: { id: 'a', name: 'AA' }, b: { id: 'b', name: 'BB' },c: { id: 'c', name: 'BB' }}
 
 // 将所有键转换为snakeCase风格
@@ -51,12 +55,12 @@ const object2 = $.snakeCaseKeys(object1) // { user_id: '1', user_name: 'A', exte
 
 // 将所有键转换为camelCase风格
 $.camelCaseKeys(object2) // { userId: '1', userName: 'A', extendData: { userAge: 25, userAvatar: '' } }
-
 ```
 
 ### 第三方库
 
 包含以下第三方库
+
 - [dayjs](https://day.js.org/zh-CN)
 - [axios](https://github.com/axios/axios)
 - [hashids](https://hashids.org)
@@ -77,5 +81,4 @@ import { lodash } from 'coa-helper'
 
 // lodash 存在别名 _ ，也可以直接导入
 import { _ } from 'coa-helper'
-
 ```

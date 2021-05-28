@@ -2,11 +2,10 @@ import * as dayjs from 'dayjs'
 import * as _ from 'lodash'
 import attach from './lib/attach'
 
-export default new class {
-
+export default new (class {
   // 附加数据
-  async attach (list: any[], key: string, extend = '', worker: (ids: string[]) => Promise<{ [key: string]: any }>, value = {}) {
-
+  // eslint-disable-next-line @typescript-eslint/default-param-last
+  async attach(list: any[], key: string, extend = '', worker: (ids: string[]) => Promise<{ [key: string]: any }>, value = {}) {
     const keys = key.split('->')
 
     // 获取需要的ID列表
@@ -20,44 +19,44 @@ export default new class {
   }
 
   // 延迟执行函数
-  async timeout (ms: number = 0) {
-    return new Promise<void>(resolve => {
+  async timeout(ms: number = 0) {
+    return await new Promise<void>((resolve) => {
       setTimeout(() => resolve(), ms)
     })
   }
 
   // 运行代码后安全退出
-  run (runner: () => Promise<void>) {
+  run(runner: () => Promise<void>) {
     runner()
       .then(() => process.exit(0))
-      .catch(e => {
+      .catch((e) => {
         console.error(e)
         process.exit(1)
       })
   }
 
   // 时间日期格式化
-  datetime (format = 'YYYY-MM-DD HH:mm:ss', time ?: number) {
+  datetime(format = 'YYYY-MM-DD HH:mm:ss', time?: number) {
     // https://day.js.org/docs/zh-CN/display/format
     return dayjs(time).format(format)
   }
 
   // try但不报错
-  try<T> (work: () => T) {
+  try<T>(work: () => T) {
     try {
       return work()
     } catch (e) {}
   }
 
   // 解析成数组，如果已经是数组则直接返回，不是数组则将值放在数组中
-  parseArray<T> (data: any): any[] {
+  parseArray<T = any>(data: any): T[] {
     return Array.isArray(data) ? data : [data]
   }
 
   // 解析成排序过的QueryString
-  sortQueryString (...data: { [index: string]: any }[]) {
+  sortQueryString(...data: Array<{ [index: string]: any }>) {
     const qsArray = [] as string[]
-    _.forEach(data, d => {
+    _.forEach(data, (d) => {
       _.forEach(d, (v, k) => {
         const val = typeof v === 'object' ? JSON.stringify(v) : v
         qsArray.push(k + '=' + val)
@@ -68,14 +67,14 @@ export default new class {
   }
 
   // 列表转换成树形式
-  list2tree (list: any[], rootValue: any = '', idKey = 'id', pidKey = 'parentId', childKey = 'child') {
-    const temp = {} as any, tree = [] as any[]
-    list.forEach(item => {
+  list2tree(list: any[], rootValue: any = '', idKey = 'id', pidKey = 'parentId', childKey = 'child') {
+    const temp = {} as any
+    const tree = [] as any[]
+    list.forEach((item) => {
       temp[item[idKey]] = item
     })
-    list.forEach(item => {
-      if (item[pidKey] === rootValue)
-        tree.push(temp[item[idKey]])
+    list.forEach((item) => {
+      if (item[pidKey] === rootValue) tree.push(temp[item[idKey]])
       else if (temp[item[pidKey]]) {
         temp[item[pidKey]][childKey] = temp[item[pidKey]][childKey] || []
         temp[item[pidKey]][childKey].push(temp[item[idKey]])
@@ -85,8 +84,8 @@ export default new class {
   }
 
   // 列表转成对象形式
-  list2object<T> (list: T[], key = 'id') {
-    const temp = {} as { [s: string]: T }
+  list2object<T>(list: T[], key = 'id') {
+    const temp: { [s: string]: T } = {}
     list.forEach((item: any) => {
       const id = item[key] || false
       if (id) temp[id] = item
@@ -95,26 +94,27 @@ export default new class {
   }
 
   // 异步遍历循环
-  async asyncEach (list: any, iteratee: (item: any, key: string | number) => void) {
-    for (let i in list)
-      if (list.hasOwnProperty(i))
+  async asyncEach(list: any, iteratee: (item: any, key: string | number) => void) {
+    for (const i in list) {
+      if (list.hasOwnProperty(i)) {
         await iteratee(list[i], i)
-  }
-
-  // 安全的异步遍历循环
-  async asyncEachSafe (list: any, callback: (item: any, key: string | number) => void) {
-    for (let i in list) {
-      try {
-        if (list.hasOwnProperty(i)) {
-          await callback(list[i], i)
-        }
-      } catch (e) {
       }
     }
   }
 
+  // 安全的异步遍历循环
+  async asyncEachSafe(list: any, callback: (item: any, key: string | number) => void) {
+    for (const i in list) {
+      try {
+        if (list.hasOwnProperty(i)) {
+          await callback(list[i], i)
+        }
+      } catch (e) {}
+    }
+  }
+
   // 将所有键转换为camelCase风格
-  camelCaseKeys (data: any) {
+  camelCaseKeys(data: any) {
     if (_.isPlainObject(data)) {
       const result = {} as any
       _.forEach(data, (v, k) => {
@@ -124,16 +124,15 @@ export default new class {
       })
       return result
     } else if (_.isArray(data)) {
-      return _.map(data, v => {
+      return _.map(data, (v) => {
         v = this.camelCaseKeys(v)
         return v
       })
-    } else
-      return data
+    } else return data
   }
 
   // 将所有键转换为snakeCase风格
-  snakeCaseKeys (data: any) {
+  snakeCaseKeys(data: any) {
     if (_.isPlainObject(data)) {
       const result = {} as any
       _.forEach(data, (v, k) => {
@@ -143,16 +142,16 @@ export default new class {
       })
       return result
     } else if (_.isArray(data)) {
-      return _.map(data, v => {
+      return _.map(data, (v) => {
         v = this.snakeCaseKeys(v)
         return v
       })
-    } else
-      return data
+    } else return data
   }
 
   // 判断汉字长度
-  stringLength (str: string) {
+  stringLength(str: string) {
+    // eslint-disable-next-line no-control-regex
     return str.replace(/[^\x00-\xff]/g, '01').length
   }
-}
+})()
