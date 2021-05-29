@@ -16,8 +16,8 @@
   },
   "scripts": {
     "dev": "tsc -w",
-    "build": "rm -rf dist && tsc && cp package.json dist",
-    "lint": "eslint . ",
+    "build": "rm -rf dist && tsc && cp package.json *.md dist",
+    "lint": "eslint .",
     "prettier": "prettier -w .",
     "sync": "curl -X PUT 'https://npm.taobao.org/sync/coa-helper?sync_upstream=true'"
   },
