@@ -1,5 +1,15 @@
 import * as _ from 'lodash'
 
+function assginSafe(source: object, extend: string, newData: any) {
+  if (extend) {
+    const oldData = _.get(source, extend)
+    const newSetData = typeof oldData === 'object' ? _.assign(oldData, newData) : newData
+    _.set(source, extend, newSetData)
+  } else {
+    _.assign(source, newData)
+  }
+}
+
 export default new (class {
   getIds(list: any[], keys: string[]) {
     const key = keys[0] || ''
@@ -8,7 +18,7 @@ export default new (class {
       _.forEach(list, (v) => {
         const item = _.get(v, key)
         if (typeof item === 'string') ids.push(item)
-        else if (_.isArray(item)) ids.push(...this.getIds(item, keys.slice(1)))
+        else if (Array.isArray(item)) ids.push(...this.getIds(item, keys.slice(1)))
       })
     else
       _.forEach(list, (v) => {
@@ -17,23 +27,22 @@ export default new (class {
     return ids
   }
 
-  setValues(list: any, data: any, keys: string[], extend = '', value = {}) {
+  setValues(list: any[], dataMap: any, keys: string[], extend = '', defaultValue = {}) {
     const key = keys[0] || ''
     const values = [] as any[]
     if (key)
       _.forEach(list, (v) => {
         const item = _.get(v, key)
         if (typeof item === 'string') {
-          const new_data = data[item] || value
-          extend ? _.set(v, extend, new_data) : _.assign(v, new_data)
-        } else if (_.isArray(item)) {
-          const new_array = this.setValues(item, data, keys.slice(1), extend, value)
-          new_array.length && _.set(v, extend, new_array)
+          assginSafe(v, extend, dataMap[item] || defaultValue)
+        } else if (Array.isArray(item)) {
+          const newArrayValues = this.setValues(item, dataMap, keys.slice(1), extend, defaultValue)
+          if (newArrayValues.length > 0) _.set(v, extend, newArrayValues)
         }
       })
     else
       _.forEach(list, (v) => {
-        if (typeof v === 'string') values.push(data[v] || value)
+        if (typeof v === 'string') values.push(dataMap[v] || defaultValue)
       })
     return values
   }
